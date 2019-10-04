@@ -6,7 +6,7 @@
 #    By: vzhao <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/30 16:14:51 by vzhao             #+#    #+#              #
-#    Updated: 2019/08/23 16:50:56 by vzhao            ###   ########.fr        #
+#    Updated: 2019/09/02 16:50:28 by vzhao            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,6 +85,7 @@ $(NAME):
 	@gcc $(FLAGS) -c $(SRC1) $(SRC2) $(SRC3)
 	@ar rc $(NAME) $(OBJS)
 	@ranlib $(NAME)
+	@/bin/rm -f $(OBJS)
 
 clean:
 	@/bin/rm -f $(OBJS)

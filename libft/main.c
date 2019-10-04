@@ -6,11 +6,11 @@
 /*   By: vzhao <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 11:14:51 by vzhao             #+#    #+#             */
-/*   Updated: 2019/08/23 16:45:00 by vzhao            ###   ########.fr       */
+/*   Updated: 2019/08/28 17:14:51 by vzhao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf/ft_printf.h"
+#include "global.h"
 
 int		main(void)
 {

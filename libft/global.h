@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memalloc.c                                      :+:      :+:    :+:   */
+/*   global.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vzhao <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/09 17:08:46 by vzhao             #+#    #+#             */
-/*   Updated: 2019/08/31 11:57:05 by vzhao            ###   ########.fr       */
+/*   Created: 2019/08/28 16:51:03 by vzhao             #+#    #+#             */
+/*   Updated: 2019/08/28 17:22:18 by vzhao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef GLOBAL_H
+# define GLOBAL_H
 
-void	*ft_memalloc(size_t size)
-{
-	void *fresh;
+# include "ft_GNL/get_next_line.h"
+# include "ft_printf/ft_printf.h"
+# include "o_lib/libft.h"
 
-	if (!(fresh = (void*)malloc(sizeof(void*) * size)))
-		return (NULL);
-	ft_bzero(fresh, size);
-	return (fresh);
-}
+// Might have to have one header file for all different folders down the road
+// To avoid function name overlap and marcos overlap and ect....
+
+#endif
