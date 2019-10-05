@@ -6,7 +6,7 @@
 /*   By: vzhao <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 12:27:27 by vzhao             #+#    #+#             */
-/*   Updated: 2019/10/03 16:00:15 by vzhao            ###   ########.fr       */
+/*   Updated: 2019/10/04 12:35:25 by vzhao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,17 @@ void		ft_ls_freeall(t_ls_data *head)
 		head = head->next;
 		free(temp);
 	}
+}
+
+int		total_size(t_ls_data *head)
+{
+	int total;
+
+	total = 0;
+	while (head != NULL)
+	{
+		total += head->stat.st_blocks;
+		head = head->next;
+	}
+	return (total);
 }

@@ -6,7 +6,7 @@
 /*   By: vzhao <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 12:05:00 by vzhao             #+#    #+#             */
-/*   Updated: 2019/10/03 20:07:55 by vzhao            ###   ########.fr       */
+/*   Updated: 2019/10/04 20:08:22 by vzhao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,27 +56,17 @@ typedef struct			s_ls_flag
 	int one;
 }						t_ls_flag;
 
-/*
-enum		e_ls_flags
-{
-	a = 1;			// 1
-	ls_l = 1 << 1,		// 2
-	R = 1 << 2,		// 4
-	r = 1 << 3,		// 8
-	t = 1 << 4,		// 16
-	S = 1 << 5,		// 32
-	f = 1 << 6,		// 64
-	n = 1 << 7,		// 128
-	u = 1 << 8		// 256
-}						t_ls_flags
-*/
-
 void	print_long(t_ls_data *a);
 
 t_ls_data		*ft_ls_lstnew(char *name);
 void			ft_ls_addend(t_ls_data **head, t_ls_data *node);
 void			ft_ls_freeall(t_ls_data *head);
+int				total_size(t_ls_data *head);
 
 t_ls_flag		get_ls_flags(int ac, char **av);
+
+void		merge_sort(t_ls_data **list, t_ls_flag *flags);
+
+char		*fix_path(char *c_path, char *s);
 
 #endif

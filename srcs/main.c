@@ -6,31 +6,34 @@
 /*   By: vzhao <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 16:38:14 by vzhao             #+#    #+#             */
-/*   Updated: 2019/10/03 20:07:57 by vzhao            ###   ########.fr       */
+/*   Updated: 2019/10/04 20:08:13 by vzhao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+void	ft_ls(char *path, t_ls_flag *flags)
+{
 /*
- * Read the flags and then sort files and directories
- * -- May store directories into a struct and all files n dirs into a different struct 
- * Then call ft_ls recursively and readjust the path
-*/ 
-
+ * make a list from the indicated path
+ * send list and flags into a printing function that handles flags n sorting
+ * if -R flag, check list for next direction and use a recursive while loop until no more directories
+*/
+}
 
 int		main(int ac, char **av)
 {
 	DIR *dp = NULL;
 	struct dirent *dptr = NULL;
-//	int sum = 0;
 	t_ls_data *head;
 	t_ls_data *temp;
 	t_ls_flag flags;
 
 	flags = get_ls_flags(ac, av);
 	dp = opendir(".");
-	if (ac >= 1)
+//	if (ac == 1)
+//		ft_ls(".", &flags);
+	if (ac > 1)
 	{
 		while (NULL != (dptr = readdir(dp)))
 		{
@@ -43,23 +46,26 @@ int		main(int ac, char **av)
 //			{
 //				info->name = dptr->d_name;
 //				stat(info->name, &info->stat);
-//				sum += info->stat.st_blocks;
 //				print_long(info);
 //			}
 
 		}
-//		ft_printf("total %d\n", sum);
+		merge_sort(&head, &flags);
 		temp = head;
+		int sum = total_size(temp);  // This sum includes all hidden files as well....
+		printf("total %d\n", sum);
 		while (temp != NULL)
 		{
 			print_long(temp);
+		//	ft_printf("%s\n", temp->name);
 			temp = temp->next;
 		}
+		ft_printf("testing: %s\n", fix_path("testing", "123"));
 		ft_ls_freeall(head);
-		closedir(dp);
+//		closedir(dp);
 	}
-	else
-		perror("Did not work\n");
+//	else
+//		perror("Did not work\n");
 //	system("leaks ft_ls");
 	return (0);
 }
