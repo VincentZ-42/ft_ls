@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ls_getflags.c                                      :+:      :+:    :+:   */
+/*   flags.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vzhao <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/03 16:42:42 by vzhao             #+#    #+#             */
-/*   Updated: 2019/10/04 17:03:23 by vzhao            ###   ########.fr       */
+/*   Created: 2019/10/07 11:00:31 by vzhao             #+#    #+#             */
+/*   Updated: 2019/10/07 11:18:13 by vzhao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_ls_flag	init_flags(void)
 	flags.n = 0;
 	flags.u = 0;
 	flags.one = 0;
+	flags.param_skip = 1;
 	return (flags);
 }
 
@@ -43,16 +44,6 @@ t_ls_flag	set_flag(char c, t_ls_flag flags)
 	flags.one = (c == '1' ? 1 : flags.one);
 	return (flags);
 }
-
-void		print_invalid_flag(char c)
-{
-	ft_printf("ft_ls: illegal option -- %c\n", c);
-	ft_printf("usage: ./ft_ls [-alRrtSfnu] [file ...]\n");
-	exit (0);
-}
-
-// Function works but does not work if you list a file or directory before the invalid flag....
-// maybe have to account for it later
 
 t_ls_flag		get_ls_flags(int ac, char **av)
 {
@@ -78,7 +69,7 @@ t_ls_flag		get_ls_flags(int ac, char **av)
 						j++;
 					}
 					else
-						print_invalid_flag(av[i][j]);
+						ls_error(&av[i][j], FLAG_ERROR);
 				}
 			}
 		}

@@ -5,67 +5,60 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vzhao <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/28 16:38:14 by vzhao             #+#    #+#             */
-/*   Updated: 2019/10/04 20:08:13 by vzhao            ###   ########.fr       */
+/*   Created: 2019/10/08 05:05:58 by vzhao             #+#    #+#             */
+/*   Updated: 2019/10/08 05:05:59 by vzhao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	ft_ls(char *path, t_ls_flag *flags)
+static void     ft_ls(t_lsdata *a, t_lsflags flags, int mult_param)
 {
-/*
- * make a list from the indicated path
- * send list and flags into a printing function that handles flags n sorting
- * if -R flag, check list for next direction and use a recursive while loop until no more directories
-*/
+    if (a->is_dir)
+        print_dir(a, flags, mult_param);
+    else
+    {
+        print_file(a, flags);
+        ft_strsdel(3, &a->name, &a->path, &a->full_path);
+    }
 }
 
-int		main(int ac, char **av)
+int             main(int ac, char **av)
 {
-	DIR *dp = NULL;
-	struct dirent *dptr = NULL;
-	t_ls_data *head;
-	t_ls_data *temp;
-	t_ls_flag flags;
+    int         mult_param;
+    t_lsflags   flags;
+    t_lsdata    *head;
+    t_lsdata    *temp;
 
-	flags = get_ls_flags(ac, av);
-	dp = opendir(".");
-//	if (ac == 1)
-//		ft_ls(".", &flags);
-	if (ac > 1)
-	{
-		while (NULL != (dptr = readdir(dp)))
-		{
-			temp = ft_ls_lstnew(dptr->d_name);
-			ft_ls_addend(&head, temp);
-			stat(temp->name, &temp->stat);
-			temp->is_dir = (S_ISDIR(temp->stat.st_mode)) ? 1: 0;
-
-//			if (dptr->d_name[0] != '.')
-//			{
-//				info->name = dptr->d_name;
-//				stat(info->name, &info->stat);
-//				print_long(info);
-//			}
-
-		}
-		merge_sort(&head, &flags);
-		temp = head;
-		int sum = total_size(temp);  // This sum includes all hidden files as well....
-		printf("total %d\n", sum);
-		while (temp != NULL)
-		{
-			print_long(temp);
-		//	ft_printf("%s\n", temp->name);
-			temp = temp->next;
-		}
-		ft_printf("testing: %s\n", fix_path("testing", "123"));
-		ft_ls_freeall(head);
-//		closedir(dp);
-	}
-//	else
-//		perror("Did not work\n");
-//	system("leaks ft_ls");
-	return (0);
+    flags = get_ls_flags(ac, av);
+    mult_param = ac - flags.param_start > 1;
+    // ft_printf("param_start = %d\nmult_param = %d\n", flags.param_start, mult_param);
+    if (ac - flags.param_start)
+    {
+        // bonus -f option here
+        flags.f ? 0 : bsort_av(ac, av, flags);
+        head = init_ls_list(ac, av, flags);
+        flags.f ? 0 : merge_sort(&head, flags);
+        temp = head;
+        while (temp)
+        {
+            ft_ls(temp, flags, mult_param);
+            temp = temp->next;
+        }
+    }
+    else
+    {
+        head = get_dir_list(ft_strdup("."), flags);
+        temp = head;
+        ft_printf("the dot is on\n");        
+        // while (temp)
+        // {
+        //     ft_ls(temp, flags, 0);
+        //     // ft_printf("%s\n", temp->name);
+        //     temp = temp->next;
+        // }
+    }
+    ft_ls_freeall(head);
+    // system("leaks ft_ls");
+    return (0);
 }

@@ -5,46 +5,44 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vzhao <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/24 12:05:00 by vzhao             #+#    #+#             */
-/*   Updated: 2019/10/04 20:08:22 by vzhao            ###   ########.fr       */
+/*   Created: 2019/10/08 04:57:41 by vzhao             #+#    #+#             */
+/*   Updated: 2019/10/08 05:03:48 by vzhao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 
-# include "global.h"
+# include "../libft/global.h"
 
-# include <dirent.h> 		//...opendir, readdir, n closedir
-# include <sys/stat.h> 		//...stat, lstat
+# include <dirent.h>
+# include <sys/stat.h>
 # include <pwd.h>
-# include <uuid/uuid.h>		//...getpwuid 
-# include <grp.h>			//...getgrgid
-# include <sys/xattr.h>		//...listxattr, getxattr
-# include <time.h>			//...ctime
-# include <stdlib.h>		//...malloc, free
-# include <stdio.h>			//...perror
-# include <string.h>		//...strerror
-# include <errno.h>			//...perror, strerror
-# include <stdlib.h>		//...exit
-# include <stdint.h>		// need this for using uint8_t
+# include <uuid/uuid.h>
+# include <grp.h>
+# include <sys/xattr.h>
+# include <time.h>
+# include <errno.h>
+# include <stdint.h>
+# include <limits.h>
 
-#define LS_FLAG_OPTIONS "alRrtSfnu1"
+# define LS_FLAG_OPTIONS "alRrtSfnug1"
+# define FLAG_ERROR 1
+# define IS_FLAG(x) (ft_strchr(LS_FLAG_OPTIONS, x) != NULL ? 1 : 0)
 
-typedef struct			s_ls_data
+typedef struct		s_lsdata
 {
-	char 				*name;
-	char				*path;
-	struct stat			stat;
-	int					is_dir;
-	struct s_ls_data	*next;
-}						t_ls_data;
+	char			*name;
+	char			*path;
+	char			*full_path;
+	struct stat		stat;
+	int				is_dir;
+	struct s_lsdata	*next;
+}					t_lsdata;
 
-// You can also make a struct to hold all the flags and pass that around recursively
-
-typedef struct			s_ls_flag
+typedef struct          s_lsflags
 {
-	int a;
+    int a;
 	int l;
 	int R;
 	int r;
@@ -53,20 +51,28 @@ typedef struct			s_ls_flag
 	int f;
 	int n;
 	int u;
+    int g;
 	int one;
-}						t_ls_flag;
+	int param_start;
+}                       t_lsflags;
 
-void	print_long(t_ls_data *a);
+t_lsflags				get_ls_flags(int ac, char **av);
+void					ls_error(char *path_error, int error);
+void					bsort_av(int ac, char **av, t_lsflags flags);
+void					merge_sort(t_lsdata **list, t_lsflags flags);
 
-t_ls_data		*ft_ls_lstnew(char *name);
-void			ft_ls_addend(t_ls_data **head, t_ls_data *node);
-void			ft_ls_freeall(t_ls_data *head);
-int				total_size(t_ls_data *head);
+t_lsdata				*init_ls_list(int ac, char **av, t_lsflags flags);
+t_lsdata				*ft_ls_lstnew(char *path, char *name);
+t_lsdata				*new_file(char *path, char *name);
+t_lsdata				*get_dir_list(char *path, t_lsflags flags);
+void		ft_ls_addend(t_lsdata **head, t_lsdata *node);
+void					ft_ls_freeall(t_lsdata *head);
+void					print_long(t_lsdata *a);
+void					print_link(char *path);
+int						total_size(t_lsdata *head);
+void					print_file(t_lsdata *a, t_lsflags flags);
+void					print_dir(t_lsdata *a, t_lsflags flags, int mult_param);
 
-t_ls_flag		get_ls_flags(int ac, char **av);
+char					*fix_path(char *c_path, char *s);
 
-void		merge_sort(t_ls_data **list, t_ls_flag *flags);
-
-char		*fix_path(char *c_path, char *s);
-
-#endif
+#endif 

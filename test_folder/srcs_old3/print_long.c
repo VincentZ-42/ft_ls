@@ -6,13 +6,13 @@
 /*   By: vzhao <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 10:58:02 by vzhao             #+#    #+#             */
-/*   Updated: 2019/10/08 03:30:57 by vzhao            ###   ########.fr       */
+/*   Updated: 2019/10/07 10:34:45 by vzhao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void		print_file_type(t_lsdata *a)
+void		print_file_type(t_ls_data *a)
 {
 	if (S_ISREG(a->stat.st_mode))
 		ft_putchar('-');
@@ -30,7 +30,7 @@ void		print_file_type(t_lsdata *a)
 		ft_putchar('s');
 }
 
-void		print_mode(t_lsdata *a)
+void		print_mode(t_ls_data *a)
 {
 	print_file_type(a);
 	ft_putchar(a->stat.st_mode & S_IRUSR ? 'r' : '-');
@@ -54,7 +54,7 @@ void		print_mode(t_lsdata *a)
  * Since we only need the owner and group name, we just pull this info and print it
 */ 
 
-void		print_names(t_lsdata *a)
+void		print_names(t_ls_data *a)
 {
 	char *owner_name;
 	char *group_name;
@@ -66,7 +66,7 @@ void		print_names(t_lsdata *a)
 	ft_printf("%-9s ", group_name);
 }
 
-void		print_time(t_lsdata *a)
+void		print_time(t_ls_data *a)
 {
 	char *time;
 
@@ -77,15 +77,15 @@ void		print_time(t_lsdata *a)
 	//-u flag bonus used here
 }
 
-void		print_long(t_lsdata *a)
+void		print_long(t_ls_data *a)
 {
 	print_mode(a);
-	ft_printf("%3d ", a->stat.st_nlink);
+	ft_printf("%d ", a->stat.st_nlink);
 	print_names(a);
 	if (!S_ISBLK(a->stat.st_mode) && !S_ISCHR(a->stat.st_mode))
 		ft_printf("%6lld ", a->stat.st_size);
 	else
-		ft_printf("%4u, %4u", major(a->stat.st_rdev), minor(a->stat.st_rdev));
+		ft_printf("%4u, %4u", major(a->stat.st_rdev), minor(a->info.st_rdev));
 	print_time(a);
 //	ft_printf("%s\n", a->name);
 }
@@ -98,17 +98,4 @@ void		print_link(char *path)
 	readlink(path, link, PATH_MAX);
 	ft_putstr(link);
 	free(link);
-}
-
-int		total_size(t_lsdata *head)
-{
-	int total;
-
-	total = 0;
-	while (head != NULL)
-	{
-		total += head->stat.st_blocks;
-		head = head->next;
-	}
-	return (total);
 }

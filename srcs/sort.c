@@ -1,29 +1,64 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_ls.c                                          :+:      :+:    :+:   */
+/*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vzhao <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/03 14:52:32 by vzhao             #+#    #+#             */
-/*   Updated: 2019/10/04 17:02:14 by vzhao            ###   ########.fr       */
+/*   Created: 2019/10/08 01:11:49 by vzhao             #+#    #+#             */
+/*   Updated: 2019/10/08 01:11:51 by vzhao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static int		timecmp(t_ls_data *a, t_ls_data *b, t_ls_flag *flags)
+// This is bubble sort
+
+static void    arg_swap(char **a, char **b)
 {
-	if (flags->u)
+    char *temp;
+
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void    bsort_av(int ac, char **av, t_lsflags flags)
+{
+    int i;
+
+    i = flags.param_start;
+    while (i + 1 < ac)
+    {
+        if (!flags.r && ft_strcmp(av[i], av[i + 1]) > 0)
+        {
+            arg_swap(&av[i], &av[i + 1]);
+            i = flags.param_start;
+        }
+        else if (flags.r && ft_strcmp(av[i], av[i + 1]) < 0)
+        {
+            arg_swap(&av[i], &av[i + 1]);
+            i = flags.param_start;
+        }
+        else
+            i++;
+    }
+}
+
+// This is merge_sort
+
+static int		timecmp(t_lsdata *a, t_lsdata *b, t_lsflags flags)
+{
+	if (flags.u)
 		return (b->stat.st_atime - a->stat.st_atime);
 	else
 		return (b->stat.st_mtime - a->stat.st_mtime);
 }
 
-static void	split(t_ls_data *list, t_ls_data **a, t_ls_data **b)
+static void	split(t_lsdata *list, t_lsdata **a, t_lsdata **b)
 {
-	t_ls_data *slow;
-	t_ls_data *fast;
+	t_lsdata *slow;
+	t_lsdata *fast;
 
 	slow = list;
 	fast = list->next;
@@ -41,16 +76,16 @@ static void	split(t_ls_data *list, t_ls_data **a, t_ls_data **b)
 	slow->next = NULL;
 }
 
-static t_ls_data	*sorting(t_ls_data *a, t_ls_data *b, t_ls_flag *flags)
+static t_lsdata	*sorting(t_lsdata *a, t_lsdata *b, t_lsflags flags)
 {
-	t_ls_data *ret;
+	t_lsdata *ret;
 
 	ret = NULL;
 	if (!a)
 		return (b);
 	if (!b)
 		return (a);
-	if ((flags->t ? timecmp(a, b, flags) : ft_strcmp(a->name, b->name)) <= 0)
+	if ((flags.t ? timecmp(a, b, flags) : ft_strcmp(a->name, b->name)) <= 0)
 	{
 		ret = a;
 		ret->next = sorting(a->next, b, flags);
@@ -63,11 +98,11 @@ static t_ls_data	*sorting(t_ls_data *a, t_ls_data *b, t_ls_flag *flags)
 	return (ret);
 }
 
-void		merge_sort(t_ls_data **list, t_ls_flag *flags)
+void		merge_sort(t_lsdata **list, t_lsflags flags)
 {
-	t_ls_data *head;
-	t_ls_data *a;
-	t_ls_data *b;
+	t_lsdata *head;
+	t_lsdata *a;
+	t_lsdata *b;
 
 	head = *list;
 	if (!head || !head->next)

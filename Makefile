@@ -6,7 +6,7 @@
 #    By: vzhao <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/28 16:24:40 by vzhao             #+#    #+#              #
-#    Updated: 2019/10/04 12:40:31 by vzhao            ###   ########.fr        #
+#    Updated: 2019/10/07 10:38:44 by vzhao            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ FILES = *.c
 SRCS = $(patsubst %, $(INC)/%, $(FILES))
 
 INCS = -I $(INC) -I $(LIB)
+LEAK_CK = -fsanitize=address -fno-omit-frame-pointer
 FLAGS = -Wall -Wextra -Werror $(INCS) -L./libft/ -lft
 
 all: $(NAME)
@@ -39,7 +40,7 @@ re: fclean all
 
 test: re
 	@echo "---------------------------------"
-	./ft_ls -la
+	./ft_ls
 	@echo "---------------------------------"
 
 .PHONY: clean fclean re all
