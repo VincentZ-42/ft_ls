@@ -87,7 +87,6 @@ void		print_long(t_lsdata *a)
 	else
 		ft_printf("%4u, %4u", major(a->stat.st_rdev), minor(a->stat.st_rdev));
 	print_time(a);
-//	ft_printf("%s\n", a->name);
 }
 
 void		print_link(char *path)

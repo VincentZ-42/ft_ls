@@ -69,7 +69,6 @@ t_lsdata    *get_dir_list(char *path, t_lsflags flags)
     }
     flags.f ? 0 : merge_sort(&head, flags);
     closedir(dptr);
-    ft_strdel(&path);
     return (head);
 }
 
@@ -84,18 +83,16 @@ void    print_file(t_lsdata *a, t_lsflags flags)
         print_link(a->full_path);
     }
     ft_putchar('\n');
-    // ft_strsdel(3, &a->name, &a->path, &a->full_path);
 }
 
 static void     ls_get_next_call(t_lsdata *a, t_lsflags flags)
 {
     t_lsdata *temp;
+    t_lsdata *del;
 
     temp = a;
-    ft_printf("---get_next_call---");
-    if (flags.R)
-        ft_printf("R flag is on");
-    ft_printf("\n");
+    if (flags.R)    
+        ft_putchar('\n');
     while (temp)
     {
         if (!(ft_strequ(".", temp->name) || ft_strequ("..", temp->name)))
@@ -103,10 +100,11 @@ static void     ls_get_next_call(t_lsdata *a, t_lsflags flags)
             if (flags.R == 1 && temp->is_dir)
                 print_dir(temp, flags, 1);
         }
-        // ft_strsdel(3, &temp->name, &temp->path, &temp->full_path);
+        del = temp;
         temp = temp->next;
+        ft_strsdel(3, &del->name, &del->path, &del->full_path);
+        free(del);
     }
-    // // ft_strsdel(3, &a->name, &a->path, &a->full_path);
 }
 
 void    print_dir(t_lsdata *a, t_lsflags flags, int mult_param)
@@ -131,12 +129,5 @@ void    print_dir(t_lsdata *a, t_lsflags flags, int mult_param)
             }
             temp = head;
             ls_get_next_call(temp, flags);
-    //         temp = head;
-    //         while (temp)
-    //         {
-    //             ft_strsdel(3, &temp->name, &temp->path, &temp->full_path);
-    //             temp = temp->next;        
-    //         }
         }
-    // ft_ls_freeall(head);
 }

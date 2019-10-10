@@ -12,9 +12,6 @@
 
 #include "ft_ls.h"
 
-// Incoporate new_file and add_file ...
-// ft_ls_lstnew and init_ls_list ...
-
 t_lsdata	*ft_ls_lstnew(char *path, char *name)
 {
 	t_lsdata *node;
@@ -85,7 +82,6 @@ void		ft_ls_freeall(t_lsdata *head)
 
 	while (head != NULL)
 	{
-		// ft_strsdel(3, &head->name, &head->path, &head->full_path);
 		temp = head;
 		head = head->next;
 		free(temp);

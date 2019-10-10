@@ -72,8 +72,5 @@ t_lsflags           get_ls_flags(int ac, char **av)
             flags.param_start++;
         }
     }
-    // ft_printf("alRrtSfnu1  Flag_options\n");
-	// ft_printf("%d%d%d%d%d%d%d%d%d%d\n", flags.a, flags.l, flags.R, flags.r, \
-	// 		flags.t, flags.S, flags.f, flags.n, flags.u, flags.one);
     return (flags);
 }

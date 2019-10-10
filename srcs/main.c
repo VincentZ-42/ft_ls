@@ -17,10 +17,8 @@ static void     ft_ls(t_lsdata *a, t_lsflags flags, int mult_param)
     if (a->is_dir)
         print_dir(a, flags, mult_param);
     else
-    {
         print_file(a, flags);
-        ft_strsdel(3, &a->name, &a->path, &a->full_path);
-    }
+    ft_strsdel(3, &a->name, &a->path, &a->full_path);
 }
 
 int             main(int ac, char **av)
@@ -44,19 +42,22 @@ int             main(int ac, char **av)
         {
             ft_ls(temp, flags, mult_param);
             temp = temp->next;
+            if (temp != NULL)          
+                if (temp->is_dir && mult_param)
+                    ft_putchar('\n');
         }
     }
     else
     {
-        head = get_dir_list(ft_strdup("."), flags);
+        // head = get_dir_list(ft_strdup("."), flags);
+        head = ft_ls_lstnew(".", ".");
+        head->is_dir = 1;
         temp = head;
-        ft_printf("the dot is on\n");        
-        // while (temp)
-        // {
-        //     ft_ls(temp, flags, 0);
-        //     // ft_printf("%s\n", temp->name);
-        //     temp = temp->next;
-        // }
+        while (temp)
+        {
+            ft_ls(temp, flags, 0);
+            temp = temp->next;
+        }
     }
     ft_ls_freeall(head);
     // system("leaks ft_ls");
