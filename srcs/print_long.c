@@ -49,65 +49,63 @@ void		print_mode(t_lsdata *a)
 }
 
 /*
- * getpwuid and getgrgid accesses the struct containing the owner and group names
- * using the information in the stat
- * Since we only need the owner and group name, we just pull this info and print it
-*/ 
+** getpwuid and getgrgid accesses the struct  ...
+** ... containing the owner and group names ...
+** using the information in the stat
+** Since we only need the owner and group name, ...
+** we just pull this info and print it
+*/
 
-void		print_names(t_lsdata *a)
+void		print_names(t_lsdata *a, t_lsflags flags)
 {
-	char *owner_name;
-	char *group_name;
+	char	*owner_name;
+	char	*group_name;
+	uid_t	user_id;
+	gid_t	grp_id;
 
-	// add bonus for g flag here
-	owner_name = getpwuid(a->stat.st_uid)->pw_name;
-	group_name = getgrgid(a->stat.st_gid)->gr_name;
-	ft_printf("%-6s ", owner_name);
-	ft_printf("%-9s ", group_name);
+	if (flags.n)
+	{
+		user_id = getpwuid(a->stat.st_uid)->pw_uid;
+		grp_id = getgrgid(a->stat.st_gid)->gr_gid;
+		flags.g ? 0 : ft_printf("%-6u ", user_id);
+		flags.o ? 0 : ft_printf("%-9u ", grp_id);
+	}
+	else
+	{
+		owner_name = getpwuid(a->stat.st_uid)->pw_name;
+		group_name = getgrgid(a->stat.st_gid)->gr_name;
+		flags.g ? 0 : ft_printf("%-6s ", owner_name);
+		flags.o ? 0 : ft_printf("%-9s ", group_name);
+	}
 }
 
-void		print_time(t_lsdata *a)
-{
-	char *time;
+/*
+** Comment applies to print_time function below....
+** Need to add condition, if last access > 6 moths, only use year time...
+** time[16] is set to null char to cut out the seconds and year
+** start at time + 4 bcuz we don't need to post day
+*/
 
-	// Need to add condition, if last access was more than 6 months, only use year time....
-	time = ctime(&a->stat.st_mtime);
-	time[16] = '\0';				// set this to null char to cut out the seconds and year
-	ft_printf("%s ", time + 4);		// start at index 4 because we don't need to post day
-	//-u flag bonus used here
+void		print_time(t_lsdata *a, t_lsflags flags)
+{
+	char	*time;
+
+	if (flags.u && flags.l)
+		time = ctime(&a->stat.st_atime);
+	else
+		time = ctime(&a->stat.st_mtime);
+	time[16] = '\0';
+	ft_printf("%s ", time + 4);
 }
 
-void		print_long(t_lsdata *a)
+void		print_long(t_lsdata *a, t_lsflags flags)
 {
 	print_mode(a);
 	ft_printf("%3d ", a->stat.st_nlink);
-	print_names(a);
+	print_names(a, flags);
 	if (!S_ISBLK(a->stat.st_mode) && !S_ISCHR(a->stat.st_mode))
 		ft_printf("%6lld ", a->stat.st_size);
 	else
 		ft_printf("%4u, %4u", major(a->stat.st_rdev), minor(a->stat.st_rdev));
-	print_time(a);
-}
-
-void		print_link(char *path)
-{
-	char	*link;
-
-	link = ft_strnew(PATH_MAX);
-	readlink(path, link, PATH_MAX);
-	ft_putstr(link);
-	free(link);
-}
-
-int		total_size(t_lsdata *head)
-{
-	int total;
-
-	total = 0;
-	while (head != NULL)
-	{
-		total += head->stat.st_blocks;
-		head = head->next;
-	}
-	return (total);
+	print_time(a, flags);
 }

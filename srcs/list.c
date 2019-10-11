@@ -12,10 +12,10 @@
 
 #include "ft_ls.h"
 
-t_lsdata	*ft_ls_lstnew(char *path, char *name)
+t_lsdata			*ft_ls_lstnew(char *path, char *name)
 {
-	t_lsdata *node;
-	char	*temp;
+	t_lsdata		*node;
+	char			*temp;
 
 	node = ft_memalloc(sizeof(t_lsdata));
 	node->name = ft_strdup(name);
@@ -33,9 +33,9 @@ t_lsdata	*ft_ls_lstnew(char *path, char *name)
 	return (node);
 }
 
-void		ft_ls_addend(t_lsdata **head, t_lsdata *node)
+void				ft_ls_addend(t_lsdata **head, t_lsdata *node)
 {
-	t_lsdata *temp;
+	t_lsdata		*temp;
 
 	temp = *head;
 	if (!*head)
@@ -76,9 +76,9 @@ t_lsdata			*init_ls_list(int ac, char **av, t_lsflags flags)
 	return (head);
 }
 
-void		ft_ls_freeall(t_lsdata *head)
+void				ft_ls_freeall(t_lsdata *head)
 {
-	t_lsdata *temp;
+	t_lsdata		*temp;
 
 	while (head != NULL)
 	{
@@ -86,4 +86,23 @@ void		ft_ls_freeall(t_lsdata *head)
 		head = head->next;
 		free(temp);
 	}
+}
+
+void				ft_rev_list(t_lsdata **a)
+{
+	t_lsdata		*curr;
+	t_lsdata		*prev;
+	t_lsdata		*next;
+
+	curr = *a;
+	prev = NULL;
+	next = NULL;
+	while (curr)
+	{
+		next = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = next;
+	}
+	*a = prev;
 }

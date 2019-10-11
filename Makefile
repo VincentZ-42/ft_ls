@@ -22,6 +22,7 @@ SRCS = $(patsubst %, $(INC)/%, $(FILES))
 INCS = -I $(INC) -I $(LIB)
 LEAK_CK = -fsanitize=address -fno-omit-frame-pointer
 FLAGS = -Wall -Wextra -Werror $(INCS) -L./libft/ -lft
+NORM = norminette -R CheckForbiddenSourceHeader
 
 all: $(NAME)
 
@@ -43,4 +44,7 @@ test: re
 	./ft_ls
 	@echo "---------------------------------"
 
+norm: 
+	$(NORM)
+	
 .PHONY: clean fclean re all

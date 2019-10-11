@@ -26,7 +26,7 @@
 # include <stdint.h>
 # include <limits.h>
 
-# define LS_FLAG_OPTIONS "alRrtSfnug1"
+# define LS_FLAG_OPTIONS "alRrtSfnuog1"
 # define FLAG_ERROR 1
 # define IS_FLAG(x) (ft_strchr(LS_FLAG_OPTIONS, x) != NULL ? 1 : 0)
 
@@ -40,39 +40,41 @@ typedef struct		s_lsdata
 	struct s_lsdata	*next;
 }					t_lsdata;
 
-typedef struct          s_lsflags
+typedef struct		s_lsflags
 {
-    int a;
-	int l;
-	int R;
-	int r;
-	int t;
-	int S;
-	int f;
-	int n;
-	int u;
-    int g;
-	int one;
-	int param_start;
-}                       t_lsflags;
+	int				a;
+	int				l;
+	int				big_r;
+	int				r;
+	int				t;
+	int				big_s;
+	int				f;
+	int				n;
+	int				u;
+	int				g;
+	int				o;
+	int				one;
+	int				param_start;
+}					t_lsflags;
 
-t_lsflags				get_ls_flags(int ac, char **av);
-void					ls_error(char *path_error, int error);
-void					bsort_av(int ac, char **av, t_lsflags flags);
-void					merge_sort(t_lsdata **list, t_lsflags flags);
+t_lsflags			get_ls_flags(int ac, char **av);
+void				ls_error(char *path_error, int error);
+void				bsort_av(int ac, char **av, t_lsflags flags);
+void				merge_sort(t_lsdata **list, t_lsflags flags);
 
-t_lsdata				*init_ls_list(int ac, char **av, t_lsflags flags);
-t_lsdata				*ft_ls_lstnew(char *path, char *name);
-t_lsdata				*new_file(char *path, char *name);
-t_lsdata				*get_dir_list(char *path, t_lsflags flags);
-void		ft_ls_addend(t_lsdata **head, t_lsdata *node);
-void					ft_ls_freeall(t_lsdata *head);
-void					print_long(t_lsdata *a);
-void					print_link(char *path);
-int						total_size(t_lsdata *head);
-void					print_file(t_lsdata *a, t_lsflags flags);
-void					print_dir(t_lsdata *a, t_lsflags flags, int mult_param);
+t_lsdata			*init_ls_list(int ac, char **av, t_lsflags flags);
+t_lsdata			*ft_ls_lstnew(char *path, char *name);
+t_lsdata			*new_file(char *path, char *name);
+t_lsdata			*get_dir_list(char *path, t_lsflags flags);
+void				ft_ls_addend(t_lsdata **head, t_lsdata *node);
+void				ft_ls_freeall(t_lsdata *head);
+void				print_long(t_lsdata *a, t_lsflags flags);
+void				print_link(char *path);
+int					total_size(t_lsdata *head);
+void				print_file(t_lsdata *a, t_lsflags flags);
+void				print_dir(t_lsdata *a, t_lsflags flags, int mult_param);
+void				ft_rev_list(t_lsdata **a);
 
-char					*fix_path(char *c_path, char *s);
+char				*fix_path(char *c_path, char *s);
 
-#endif 
+#endif

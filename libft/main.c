@@ -12,14 +12,20 @@
 
 #include "global.h"
 
-int		main(void)
-{
-	char *ex1 = ft_strdup("Hello my name is Vincent");
-	char *ex2 = ft_strdup("I really hope this workds");
+/*
+** Add system("leaks testing");
+** to check for leaks;
+*/
 
+int			main(void)
+{
+	char	*ex1;
+	char	*ex2;
+
+	ex1 = ft_strdup("Hello my name is Vincent");
+	ex2 = ft_strdup("I really hope this workds");
 	ft_printf("ex1 = %s\nex2 = %s\n", ex1, ex2);
 	ft_strsdel(2, &ex1, &ex2);
 	ft_printf("ex1 = %s\nex2 = %s\n", ex1, ex2);
-//	system("leaks testing");
 	return (0);
 }

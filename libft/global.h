@@ -17,7 +17,9 @@
 # include "ft_printf/ft_printf.h"
 # include "o_lib/libft.h"
 
-// Might have to have one header file for all different folders down the road
-// To avoid function name overlap and marcos overlap and ect....
+/*
+** Might have to have one header file for all different folders down the road
+** To avoid function name overlap and marcos overlap and ect....
+*/
 
 #endif

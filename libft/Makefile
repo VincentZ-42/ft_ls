@@ -78,6 +78,7 @@ OBJS = $(LIBFILES:%.c=%.o) $(PRINTFILES:%.c=%.o) $(GNLFILES:%.c=%.o)
 
 INC = -I $(GNL) -I $(LIB) -I $(PRINTF)
 FLAGS = -Wall -Wextra -Werror $(INC)
+DO_CLEAN = @/bin/rm -f $(OBJS)
 
 all: $(NAME)
 
@@ -85,7 +86,7 @@ $(NAME):
 	@gcc $(FLAGS) -c $(SRC1) $(SRC2) $(SRC3)
 	@ar rc $(NAME) $(OBJS)
 	@ranlib $(NAME)
-	@/bin/rm -f $(OBJS)
+	$(DO_CLEAN)
 
 clean:
 	@/bin/rm -f $(OBJS)

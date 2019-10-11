@@ -12,10 +12,10 @@
 
 #include "libft.h"
 
-void	ft_strsdel(size_t nbr, ...)
+void		ft_strsdel(size_t nbr, ...)
 {
-	va_list ap;
-	char **str;
+	va_list	ap;
+	char	**str;
 
 	va_start(ap, nbr);
 	while (nbr--)

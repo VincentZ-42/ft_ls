@@ -17,7 +17,7 @@ static void	ls_flag_error(char flag)
 	ft_putstr_fd("ls: illegal option -- ", 2);
 	ft_putchar_fd(flag, 2);
 	ft_printf("\nusage: ls [%s] [file ...]\n", LS_FLAG_OPTIONS);
-	exit (1);
+	exit(1);
 }
 
 static void	ls_dne_error(char *file)
